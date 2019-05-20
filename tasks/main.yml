@@ -1,0 +1,59 @@
+---
+
+- name: install OpenHPC repository
+  yum:
+    name: "https://github.com/openhpc/ohpc/releases/download/v{{ lustre_ohpc_version }}.GA/ohpc-release-{{ lustre_ohpc_version }}-1.el7.x86_64.rpm"
+  tags: lustre
+
+- name: install lustre client package
+  yum:
+    name: "{{ lustre_packages }}"
+  tags: lustre
+
+- name: ensure lustre settings path exists
+  file:
+    path: "{{ lustre_settings_path }}"
+    state: directory
+  tags: lustre
+
+- name: copy lustre settings script
+  template:
+    src: lustre-settings
+    dest: "{{ lustre_settings_path }}/lustre-settings"
+    owner: root
+    group: root
+    mode: 0755
+  notify: restart lustre-settings
+  tags: lustre
+
+- name: copy lustre settings systemd script
+  template:
+    src: lustre-settings.service
+    dest: /etc/systemd/system/lustre-settings.service
+    owner: root
+    group: root
+    mode: 0644
+  tags: lustre
+
+- name: start and enable lustre-settings service
+  systemd:
+    name: lustre-settings
+    state: started
+    enabled: yes
+    daemon_reload: yes
+  tags: lustre
+
+- name: set lnet network in module settings
+  lineinfile:
+    path: /etc/modprobe.d/lustre.conf
+    regexp: '^options lnet networks='
+    line: "options lnet networks=tcp({{ lustre_lnet_interface }})"
+    create: yes
+  tags: lustre
+
+- name: start and enable LNet service
+  service:
+    name: lnet
+    state: started
+    enabled: yes
+  tags: lustre

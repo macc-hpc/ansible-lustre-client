@@ -1,0 +1,10 @@
+[Unit]
+Description=Lustre Settings
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=forking
+ExecStart="{{ lustre_settings_path }}/lustre-settings"
+TimeoutSec=0
+RemainAfterExit=yes

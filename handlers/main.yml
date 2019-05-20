@@ -1,0 +1,7 @@
+---
+
+- name: restart lustre-settings
+  service:
+    name: lustre-settings
+    state: restarted
+  tags: lustre

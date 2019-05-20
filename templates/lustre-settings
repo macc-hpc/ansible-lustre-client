@@ -1,0 +1,17 @@
+#!/usr/bin/env sh
+
+LCTL=$(which lctl)
+
+if [ $? -eq 0 ]; then
+    lctl set_param osc.*.checksums=0
+    lctl set_param ldlm.namespaces.*.lru_size=2000
+    lctl set_param osc.*OST*.max_dirty_mb=512
+    lctl set_param osc.*OST*.max_rpcs_in_flight=32
+    lctl set_param timeout=600
+    lctl set_param at_min=250
+    lctl set_param at_max=600
+    exit 0
+else
+    echo 'lctl command not found' >&2
+    exit 1
+fi
