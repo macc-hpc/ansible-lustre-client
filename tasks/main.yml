@@ -47,13 +47,32 @@
   lineinfile:
     path: /etc/modprobe.d/lustre.conf
     regexp: '^options lnet networks='
-    line: "options lnet networks=tcp({{ lustre_lnet_interface }})"
+    line: "options lnet networks=\"{{ lustre_lnet }}\""
     create: yes
   tags: lustre
 
+- name: make lnet override directory
+  file:
+    path: /etc/systemd/system/lnet.service.d/
+    state: directory
+    owner: root
+    group: root
+    mode: 0755
+  tags: lustre
+
+- name: copy lnet override
+  template:
+    src: override.conf
+    dest: /etc/systemd/system/lnet.service.d/override.conf
+    owner: root
+    group: root
+    mode: 0644
+  tags: lustre
+
 - name: start and enable LNet service
-  service:
+  systemd:
     name: lnet
     state: started
     enabled: yes
+    daemon_reload: yes
   tags: lustre
