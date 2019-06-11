@@ -79,7 +79,7 @@
 
 - name: create destination mount dir
   file:
-    path: "{{ item.dest }}"
+    path: "{{ item.path }}"
     state: directory
     owner: root
     group: root
@@ -87,17 +87,12 @@
   loop: "{{ lustre_mounts }}"
   tags: lustre
 
-- name: add filesystems to fstab
-  lineinfile:
-    path: /etc/fstab
-    line: "{{ item.fstab }}"
-    state: "{{ item.state }}"
-  loop: "{{ lustre_mounts }}"
-  tags: lustre
-
 - name: mount defined mounts
   mount:
-    path: "{{ item.dest }}"
-    state: mounted
+    src: "{{ item.src }}"
+    path: "{{ item.path }}"
+    fstype: "{{ item.fstype }}"
+    opts: "{{ item.opts }}"
+    state: "{{ item.state }}"
   loop: "{{ lustre_mounts }}"
   tags: lustre
