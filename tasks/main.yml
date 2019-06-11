@@ -84,6 +84,7 @@
     owner: root
     group: root
     mode: 0755
+  loop: "{{ lustre_mounts }}"
   tags: lustre
 
 - name: add filesystems to fstab
