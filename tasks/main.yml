@@ -67,6 +67,7 @@
     owner: root
     group: root
     mode: 0644
+  notify: restart lnet
   tags: lustre
 
 - name: start and enable LNet service
@@ -74,5 +75,11 @@
     name: lnet
     state: started
     enabled: yes
-    daemon_reload: yes
+  tags: lustre
+
+- name: add filesystems to fstab
+  lineinfile:
+    path: /etc/fstab
+    line: "{{ item }}"
+  loop: "{{ lustre_mounts }}"
   tags: lustre

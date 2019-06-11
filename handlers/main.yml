@@ -5,3 +5,10 @@
     name: lustre-settings
     state: restarted
   tags: lustre
+
+- name: restart lnet
+  systemd:
+    name: lnet
+    state: restarted
+    daemon_reload: yes
+  tags: lustre

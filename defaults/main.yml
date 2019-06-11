@@ -6,3 +6,5 @@ lustre_settings_path: /usr/local/bin
 lustre_packages:
   - lustre-client-ohpc
   - kmod-lustre-client-ohpc
+
+lustre_mounts: []
