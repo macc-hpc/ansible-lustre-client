@@ -89,7 +89,14 @@
 - name: add filesystems to fstab
   lineinfile:
     path: /etc/fstab
-    line: "{{ item.fstav }}"
+    line: "{{ item.fstab }}"
     state: "{{ item.state }}"
+  loop: "{{ lustre_mounts }}"
+  tags: lustre
+
+- name: mount defined mounts
+  mount:
+    path: "{{ item.dest }}"
+    state: mounted
   loop: "{{ lustre_mounts }}"
   tags: lustre
