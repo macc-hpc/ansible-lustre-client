@@ -49,6 +49,7 @@
     regexp: '^options lnet networks='
     line: "options lnet networks=\"{{ lustre_lnet }}\""
     create: yes
+  notify: restart lnet
   tags: lustre
 
 - name: make lnet override directory
