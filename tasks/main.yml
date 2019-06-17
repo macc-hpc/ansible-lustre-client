@@ -49,6 +49,7 @@
     regexp: '^options lnet networks='
     line: "options lnet networks=\"{{ lustre_lnet }}\""
     create: yes
+    mode: 0644
   notify: restart lnet
   tags: lustre
 
@@ -76,24 +77,4 @@
     name: lnet
     state: started
     enabled: yes
-  tags: lustre
-
-- name: create destination mount dir
-  file:
-    path: "{{ item.path }}"
-    state: directory
-    owner: root
-    group: root
-    mode: 0755
-  loop: "{{ lustre_mounts }}"
-  tags: lustre
-
-- name: mount defined mounts
-  mount:
-    src: "{{ item.src }}"
-    path: "{{ item.path }}"
-    fstype: "{{ item.fstype }}"
-    opts: "{{ item.opts }}"
-    state: "{{ item.state }}"
-  loop: "{{ lustre_mounts }}"
   tags: lustre
