@@ -26,21 +26,27 @@
   notify: restart lustre-settings
   tags: lustre
 
-- name: copy lustre settings systemd script
+- name: copy lustre systemd scripts
   template:
-    src: lustre-settings.service
-    dest: /etc/systemd/system/lustre-settings.service
+    src: "{{ item }}"
+    dest: "/etc/systemd/system/{{ item }}"
     owner: root
     group: root
     mode: 0644
+  loop:
+    - lustre-settings.service
+    - lustre-shutdown.service
   tags: lustre
 
-- name: start and enable lustre-settings service
+- name: start and enable lustre systemd scripts
   systemd:
-    name: lustre-settings
+    name: "{{ item }}"
     state: started
     enabled: yes
     daemon_reload: yes
+  loop:
+    - lustre-settings
+    - lustre-shutdown
   tags: lustre
 
 - name: set lnet network in module settings
