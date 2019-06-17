@@ -35,7 +35,6 @@
     mode: 0644
   loop:
     - lustre-settings.service
-    - lustre-shutdown.service
   tags: lustre
 
 - name: start and enable lustre systemd scripts
@@ -46,7 +45,6 @@
     daemon_reload: yes
   loop:
     - lustre-settings
-    - lustre-shutdown
   tags: lustre
 
 - name: set lnet network in module settings

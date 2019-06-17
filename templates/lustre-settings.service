@@ -1,10 +1,13 @@
 [Unit]
 Description=Lustre Settings
-After=network-online.target
-Wants=network-online.target
+Requires=network-online.target {{ lustre_after }}
+After=network-online.target {{ lustre_after }}
 
 [Service]
 Type=forking
 ExecStart="{{ lustre_settings_path }}/lustre-settings"
 TimeoutSec=0
 RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
