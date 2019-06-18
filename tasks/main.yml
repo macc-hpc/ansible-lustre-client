@@ -10,43 +10,6 @@
     name: "{{ lustre_packages }}"
   tags: lustre
 
-- name: ensure lustre settings path exists
-  file:
-    path: "{{ lustre_settings_path }}"
-    state: directory
-  tags: lustre
-
-- name: copy lustre settings script
-  template:
-    src: lustre-settings
-    dest: "{{ lustre_settings_path }}/lustre-settings"
-    owner: root
-    group: root
-    mode: 0755
-  notify: restart lustre-settings
-  tags: lustre
-
-- name: copy lustre systemd scripts
-  template:
-    src: "{{ item }}"
-    dest: "/etc/systemd/system/{{ item }}"
-    owner: root
-    group: root
-    mode: 0644
-  loop:
-    - lustre-settings.service
-  tags: lustre
-
-- name: start and enable lustre systemd scripts
-  systemd:
-    name: "{{ item }}"
-    state: started
-    enabled: yes
-    daemon_reload: yes
-  loop:
-    - lustre-settings
-  tags: lustre
-
 - name: set lnet network in module settings
   lineinfile:
     path: /etc/modprobe.d/lustre.conf

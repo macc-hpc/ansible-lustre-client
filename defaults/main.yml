@@ -2,8 +2,6 @@
 
 lustre_ohpc_version: 1.3
 lustre_lnet: tcp(eth0)
-lustre_settings_path: /usr/local/bin
-lustre_after: ''
 lustre_packages:
   - lustre-client-ohpc
   - kmod-lustre-client-ohpc
